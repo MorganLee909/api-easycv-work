@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>API Documentation | easycv.work</title>
+        <link rel="stylesheet" href="/api/css">
+    </head>
+    <body>
+        <div class="contents">
+            <h1>easycv.work</h1>
+            <h2>Routes</h2>
+            <h3>User</h3>
+            <a href="#loginRoute">Login</a>
+            <a href="#logoutRoute">Logout</a>
+            <a href="#retrieveUserRoute">Retrieve User</a>
+            <a href="#createUserRoute">Create User</a>
+            <a href="#updateUserRoute">Update User</a>
+            <a href="#deleteUserRoute">Delete User</a>
+            <h3>CV</h3>
+            <a href="#retrieveOneCvRoute">Retrieve One CV</a>
+            <a href="#retrieveManyCvRoute">Retrieve Many CV's</a>
+            <a href="#createCvRoute">Create CV</a>
+            <a href="#updateCvRoute">Update CV</a>
+            <a href="#deleteCvRoute">Delete CV</a>
+            <h3>Employer</h3>
+            <a href="#createEmployerRoute">Create Employer</a>
+            <a href="#searchEmployerRoute">Search Employers</a>
+            <h2>Models</h2>
+            <a href="#userModel">User</a>
+            <a href="#cvModel">CV</a>
+            <a href="#employerModel">Employer</a>
+        </div>
+
+        <div style="width:350px;"></div>
+
+        <div class="docs">
+            <h1>API Docs for easycv.work</h1>
+
+            <h1>Routes</h1>
+
+            <div id="loginRoute" class="route">
+                <h2><span class="method">POST:</span>/api/login</h2>
+                <p>Logs in the user</p>
+                <pre><code>body = {
+    email (String): user email
+    password (String): user password
+}</code></pre>
+                <code>response = {}</code>
+            </div>
+
+            <div id="logoutRoute" class="route">
+                <h2><span class="method">GET:</span>/api/logout</h2>
+                <p>Logs out the user</p>
+                <code>response = {}</code>
+            </div>
+
+            <div id="retrieveUserRoute" class="route">
+                <h2><span class="method">GET:</span>/api/user</h2>
+                <p>Retrieves the data for the currently logged in user</p>
+                <code>response = User</code>
+            </div>
+
+            <div id="createUserRoute" class="route">
+                <h2><span class="method">POST:</span>/api/user</h2>
+                <p>Creates a new user. User is logged in once created. Also creates a single, blank CV</p>
+                <pre><code>body = {
+    firstName (String): user first name
+    lastName (String): user last name
+    email (String): user email, must be unique
+    password (String): user password, minimum 10 characters
+}</code></pre>
+                <code>response = User</code>
+            </div>
+
+            <div id="updateUserRoute" class="route">
+                <h2><span class="method">PUT:</span>/api/user</h2>
+                <p>Updates many of the user details. NOTE: for languages and skill, if it is undefined/null then there will be no change. Otherwise all languages must be provided, new and existing</p>
+                <pre><code>body = {
+    email (String, optional): new email address
+    firstName (String, optional): new first name
+    lastName (String, optional): new last name
+    languages (Optional): [{
+        name (String): language name,
+        level (String, optional): language level
+    }]
+    skills ([String], optional): user skills, must contain all skills, new and old
+}</code></pre>
+                <code>response = User</code>
+            </div>
+
+            <div id="deleteUserRoute" class="route">
+                <h2><span class="method">DELETE:</span>/api/user</h2>
+                <p>Deletes all data for a single user. Only works for currently logged in account. This will delete all CV's associated with the user account as well. It will also remove the user from session.</p>
+                <code>response = {}</code>
+            </div>
+
+            <div id="retrieveOneCvRoute" class="route">
+                <h2><span class="method">GET:</span>/api/cv/:cv</h2>
+                <p>Retrieve the data for a single CV from the CV id. Non-sensitive user data is populated. Employer data is populated for each job.</p>
+                <pre><code>Parameters
+    cv: id for the CV to be retrieved</code></pre>
+                <code>response = CV</code>
+            </div>
+
+            <div id="retrieveManyCvRoute" class="route">
+                <h2><span class="method">GET:</span>/api/cv</h2>
+                <p>Retrieve all CV's for the logged in user. Employers in work history are populated as well.</p>
+                <code>response = [CV]</code>
+            </div>
+
+            <div id="createCvRoute" class="route">
+                <h2><span class="method">POST:</span>/api/cv</h2>
+                <p>Create a new CV for the logged in user. Employers can either be the id of an existing employer or a newly created employer.</p>
+                <pre><code>body = {
+    jobTitle (String): job title for the user
+    jobCategory (String): category that job falls under
+    experience (Number): years of experience in job
+    skills ([String]): list of user skills that apply to the job
+    workHistory: [{
+        employer (String or Employer): Employer worked for. Can be the name of employer or the id of an existing employer.
+        newEmployer (Boolean): if 'employer' is the name of a non-existing employer, mark true. Mark false if employer is id of existing employer.
+        startDate (Date): date of start of employment for this position
+        endDate (Date, optional): date of end of employment. If currently employed here, leave undefined or other falsey value
+        description (String): description of job responsiblities
+    }]
+}</code></pre>
+                <code>response = CV</code>
+            </div>
+
+            <div id="updateCvRoute" class="route">
+                <h2><span class="method">PUT:</span>/api/cv</h2>
+                <p>Updates basic data for a CV. For 'skills', 'newEmployment' and 'removeEmployment', a value of undefined or null will leave those properties unchanged. Provide all skills to update the skills field, it will completely replace the data.</p>
+                <pre><code>body = {
+    cv (String): id of CV to update
+    jobTitle (String, optional): job title for CV
+    jobCategory (String, optional): job category for CV
+    experience (Number, optional): years of experience in position
+    skills ([String], optional): skill applicable to CV
+    newEmployment (Optional): [{
+        employer (String): name of the employer
+        newEmployer (Boolean): true (For future use)
+        startDate (Date): Date of start of employment
+        endDate (Date, optional): Date of end of employment
+        description (String): Description of job responsiblities
+    }]
+    removeEmployment ([String], optional): Used to remove employment records from a CV. Should be a list of the `_id` properties from each employment that is to be removed.
+}</code></pre>
+                <code>response = CV</code>
+            </div>
+
+            <div id="deleteCvRoute" class="route">
+                <h2><span class="method">DELETE:</span>/api/cv/:cv</h2>
+                <p>Deletes a single cv owned by a user</p>
+                <code>response = {}</code>
+            </div>
+
+            <div id="createEmployerRoute" class="route">
+                <h2><span class="method">POST:</span>/api/employer</h2>
+                <p>Creates new employers (work history) and then adds them to the provided CV.</p>
+                <pre><code>body = {
+    cv (String): id of cv to add employers to
+    employers: [{
+        name (String): employer name
+        startDate (Date): date of start of employment
+        endDate (Date): date of end of employment. If current, ignore or use falsey value.
+        description (String): description of employment
+    }]
+}</code></pre>
+                <code>response = [Employer]</code>
+            </div>
+
+            <div id="searchEmployerRoute" class="route">
+                <h2><span class="method">GET:</span>/api/employer</h2>
+                <p>Retrieve a list of employers through a string search by name</p>
+                <pre><code>query = {
+    s (String): string to search employers by name
+}</code></pre>
+            </div>
+
+            <h1>Data</h1>
+
+            <div id="userModel" class="model">
+                <h2>User</h2>
+                <p>Application user</p>
+                <pre><code>{
+    email (String): user email
+    firstName (String): user first name
+    lastName (String): user last name
+    languages: [{
+        name (String): language name
+        level (String, optional): proficiency level of the language
+    }]
+    skills ([String], optional): List of skills for the user
+    cvs ([CV]): List of CV's for the user. Will always contain at least one CV
+}</code></pre>
+            </div>
+
+            <div id="cvModel" class="model">
+                <h2>CV</h2>
+                <p>A resume/CV for a specific user</p>
+                <pre><code>{
+    user (User): user that owns the CV
+    jobTitle (String): Job title of user
+    jobCategory (String): Category of job
+    experience (Number): Number of years of experience
+    skills ([String]): List of skills from user that apply to this CV,
+    workHistory: [{
+        employer (Employer): company that user worked at
+        startDate (Date): date of start of employment
+        endDate (Date): date of end of employment. Undefined if current
+        description (String): description of job performed for company
+    }]
+}</code></pre>
+            </div>
+
+            <div id="employerModel" class="model">
+                <h2>Employer</h2>
+                <p>A company or person employing people.</p>
+                <pre><code>{
+    name (String): name of employer
+}</code></pre>
+            </div>
+        </div>
+    </body>
+</html>
