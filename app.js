@@ -2,6 +2,7 @@ const express = require("express");
 const compression = require("compression");
 const mongoose = require("mongoose");
 const session = require("cookie-session");
+const cors = require("cors");
 const https = require("https");
 const fs = require("fs");
 
@@ -12,9 +13,10 @@ let mongooseOptions = {
     useUnifiedTopology: true
 }
 
+let corsOrigin = "http://localhost:8080";
+
 let httpsServer = {};
 if(process.env.NODE_ENV === "production"){
-
     httpsServer = https.createServer({
         key: fs.readFileSync("/etc/letsencrypt/live/easycv.work/privkey.pem", "utf8"),
         cert: fs.readFileSync("/etc/letsencrypt/live/easycv.work/fullchain.pem", "uft8")
@@ -31,6 +33,8 @@ if(process.env.NODE_ENV === "production"){
     mongooseOptions.auth = {authSource: "admin"};
     mongooseOptions.user = "easycv-work";
     mongooseOptions.pass = process.env.MONGODB_PASS;
+
+    corsOrigin = "https://easycv.work";
 }
 
 app.use(compression());
@@ -41,6 +45,7 @@ app.use(session({
     saveUninitialized: true,
     resave: false
 }));
+app.use(cors({origin: corsOrigin}));
 app.use(express.static(`${__dirname}/views/index.html`));
 
 mongoose.connect("mongodb://127.0.0.1/easycv", mongooseOptions);
