@@ -45,14 +45,6 @@ module.exports = {
     },
 
     /*
-    GET: log out a user
-    */
-    logout: function(req, res){
-        req.session.user = undefined;
-        return res.json({});
-    },
-
-    /*
     GET: retrieve data for a single user
     Requires login
     */
