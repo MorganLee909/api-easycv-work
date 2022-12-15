@@ -25,9 +25,13 @@ module.exports = {
             .then((result)=>{
                 if(!result) throw "password";
 
-                req.session.user = u.session;
+                let token = jwt.sign({
+                    id: user._id,
+                    email: u.email,
+                    passHassh: user.password
+                }, process.env.JWT_SECRET);
 
-                return res.json({});
+                return res.json({jwt: token});
             })
             .catch((err)=>{
                 switch(err){
@@ -108,7 +112,7 @@ module.exports = {
             })
             .then((user)=>{
                 let token = jwt.sign({
-                    _id: user._id.toString(),
+                    id: user._id.toString(),
                     email: user.email,
                     passHash: user.password
                 }, process.env.JWT_SECRET);
