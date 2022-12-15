@@ -11,7 +11,6 @@
             <h2>Routes</h2>
             <h3>User</h3>
             <a href="#loginRoute">Login</a>
-            <a href="#logoutRoute">Logout</a>
             <a href="#retrieveUserRoute">Retrieve User</a>
             <a href="#createUserRoute">Create User</a>
             <a href="#updateUserRoute">Update User</a>
@@ -45,13 +44,9 @@
     email (String): user email
     password (String): user password
 }</code></pre>
-                <code>response = {}</code>
-            </div>
-
-            <div id="logoutRoute" class="route">
-                <h2><span class="method">GET:</span>/api/logout</h2>
-                <p>Logs out the user</p>
-                <code>response = {}</code>
+                <pre><code>response = {
+    jwt: JSON Web Token    
+}</code></pre>
             </div>
 
             <div id="retrieveUserRoute" class="route">
@@ -69,7 +64,10 @@
     email (String): user email, must be unique
     password (String): user password, minimum 10 characters
 }</code></pre>
-                <code>response = User</code>
+                <pre><code>response = {
+    user: User
+    jwt: JSON Web Token
+}</code></pre>
             </div>
 
             <div id="updateUserRoute" class="route">
@@ -90,7 +88,7 @@
 
             <div id="deleteUserRoute" class="route">
                 <h2><span class="method">DELETE:</span>/api/user</h2>
-                <p>Deletes all data for a single user. Only works for currently logged in account. This will delete all CV's associated with the user account as well. It will also remove the user from session.</p>
+                <p>Deletes all data for a single user. Only works for currently logged in account. This will delete all CV's associated with the user account as well.</p>
                 <code>response = {}</code>
             </div>
 
