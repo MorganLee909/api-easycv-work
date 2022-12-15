@@ -19,12 +19,7 @@ const UserSchema = new mongoose.Schema({
     cvs: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "cv"
-    }],
-    session: {
-        type: String,
-        required: true,
-        index: true
-    }
+    }]
 });
 
 module.exports = mongoose.model("user", UserSchema);
