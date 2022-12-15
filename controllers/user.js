@@ -66,7 +66,10 @@ module.exports = {
         email: String
         password: String
     }
-    response = User
+    response = {
+        user: User,
+        jwt: JWT
+    }
     */
     create: function(req, res){
         let email = req.body.email.toLowerCase();
@@ -95,8 +98,7 @@ module.exports = {
                     lastName: req.body.lastName,
                     languages: [],
                     skills: [],
-                    cvs: [newCv._id],
-                    session: helper.createId(25)
+                    cvs: [newCv._id]
                 });
 
                 newCv.user = newUser._id;
@@ -105,12 +107,18 @@ module.exports = {
                 return newUser.save();
             })
             .then((user)=>{
-                req.session.user = user.session;
-
-                user.session = undefined;
+                let token = jwt.sign({
+                    _id: user._id.toString(),
+                    email: user.email,
+                    passHash: user.password
+                }, process.env.JWT_SECRET);
+                
                 user.password = undefined;
 
-                return res.json(user);
+                return res.json({
+                    user: user,
+                    jwt: token
+                });
             })
             .catch((err)=>{
                 switch(err){
