@@ -10,7 +10,7 @@ let app = express();
 let mongooseOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true
-}
+};
 
 let corsOrigin = "http://localhost:8080";
 
