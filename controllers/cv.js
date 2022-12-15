@@ -34,7 +34,6 @@ module.exports = {
             .then((cv)=>{
                 cv.user.password = undefined;
                 cv.user.cvs = undefined;
-                cv.user.session = undefined;
 
                 return res.json(cv);
             })

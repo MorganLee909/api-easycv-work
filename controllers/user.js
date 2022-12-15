@@ -50,7 +50,6 @@ module.exports = {
     */
     getOne: function(req, res){
         res.locals.user.password = undefined;
-        res.locals.user.session = undefined;
         return res.json(res.locals.user);
     },
 
@@ -151,7 +150,6 @@ module.exports = {
         u.save()
             .then((user)=>{
                 user.password = undefined;
-                user.session = undefined;
 
                 return res.json(user);
             })
@@ -172,7 +170,6 @@ module.exports = {
                 return User.deleteOne({_id: res.locals.user._id});
             })
             .then((response)=>{
-                req.session.user = undefined;
                 return res.json({});
             })
             .catch((err)=>{

@@ -1,7 +1,6 @@
 const express = require("express");
 const compression = require("compression");
 const mongoose = require("mongoose");
-const session = require("cookie-session");
 const cors = require("cors");
 const https = require("https");
 const fs = require("fs");
@@ -39,12 +38,6 @@ if(process.env.NODE_ENV === "production"){
 
 app.use(compression());
 app.use(express.json());
-app.use(session({
-    secret: "easy accessible access to extreme resumeing",
-    sameSite: "lax",
-    saveUninitialized: true,
-    resave: false
-}));
 app.use(cors({origin: corsOrigin}));
 app.use(express.static(`${__dirname}/views/index.html`));
 
