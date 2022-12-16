@@ -1,15 +1,14 @@
 const User = require("./models/user.js");
 
+const jwt = require("jsonwebtoken");
+
 module.exports = {
     user: function(req, res, next){
         let authData = {};
-        let token = req.headers["authorization"].split(" ")[1];
-        if(!token) return res.json("JSON Web Token not provided");
-
         try{
             authData = jwt.verify(req.headers["authorization"].split(" ")[1], process.env.JWT_SECRET);
         }catch(e){
-            return res.json("Invalid JSON Web token");
+            return res.json("Invalid or missing JSON Web token");
         }
 
         User.findOne({_id: authData.id})

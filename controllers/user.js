@@ -3,6 +3,7 @@ const Cv = require("../models/cv.js");
 
 const helper = require("../helper.js");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
     /*
@@ -26,9 +27,9 @@ module.exports = {
                 if(!result) throw "password";
 
                 let token = jwt.sign({
-                    id: user._id,
+                    id: u._id,
                     email: u.email,
-                    passHassh: user.password
+                    passHassh: u.password
                 }, process.env.JWT_SECRET);
 
                 return res.json({jwt: token});
