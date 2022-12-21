@@ -14,6 +14,10 @@ const cvSchema = mongoose.Schema({
     },
     skills: [String],
     workHistory: [{
+        position: {
+            type: String,
+            required: true
+        },
         employer: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "employer",
