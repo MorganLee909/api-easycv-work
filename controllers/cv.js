@@ -108,6 +108,7 @@ module.exports = {
             experience: Number
             skills: [String]
             newEmployment: [{
+                position: String
                 employer: Employer id || String,
                 newEmployer: Boolean
                 startDate: Date
@@ -140,6 +141,7 @@ module.exports = {
                         }
                         
                         cv.workHistory.push({
+                            position: wh.position,
                             employer: employer,
                             startDate: new Date(wh.startDate),
                             endDate: wh.endDate ? new Date(wh.endDate) : undefined,
@@ -203,19 +205,5 @@ module.exports = {
         }
 
         return res.json("You do not have permission to delete that CV");
-
-        // Cv.findOne({_id: req.params.cv})
-        //     .then((cv)=>{
-        //         if(res.locals.user._id.toString() !== cv.user.toString()) throw "user";
-
-        //         return Cv.deleteOne({_id: cv._id});
-        //     })
-        //     .then((response)=>{
-        //         return res.json({});
-        //     })
-        //     .catch((err)=>{
-        //         console.error(err);
-        //         return res.json("ERROR: unable to delete CV");
-        //     });
     }
 }
