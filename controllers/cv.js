@@ -1,8 +1,6 @@
 const Cv = require("../models/cv.js");
 const Employer = require("../models/employer.js");
 
-const ObjectId = require("mongoose").Types.ObjectId;
-
 module.exports = {
     /*
     GET: retrieve all CV's for the logged in user
@@ -51,6 +49,7 @@ module.exports = {
         experience: Number
         skills: [String]
         workHistory: [{
+            position: String
             employer: Employer || String
             newEmployer: Boolean
             startDate: Date
@@ -62,7 +61,7 @@ module.exports = {
     create: function(req, res){
         let cv = new Cv({
             user: res.locals.user._id,
-            jobTitle: req.body.JobTitle,
+            jobTitle: req.body.jobTitle,
             jobCategory: req.body.jobCategory,
             experience: req.body.experience,
             skills: req.body.skills,
@@ -80,6 +79,7 @@ module.exports = {
             }
 
             cv.workHistory.push({
+                position: wh.position,
                 employer: employer,
                 startDate: new Date(wh.startDate),
                 endDate: wh.endDate ? new Date(wh.endDate) : undefined,

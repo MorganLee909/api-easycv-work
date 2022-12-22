@@ -5,7 +5,10 @@ const cvSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "user"
     },
-    jobTitle: String,
+    jobTitle: {
+        type: String,
+        required: true
+    },
     jobCategory: String,
     experience: {
         type: Number,
