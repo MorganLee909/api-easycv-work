@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const EmploymentSchema = mongoose.Schema({
+const EmploymentSchema = new mongoose.Schema({
     position: {
         type: String,
         required: true
@@ -20,7 +20,7 @@ const EmploymentSchema = mongoose.Schema({
     }
 });
 
-const CvSchema = mongoose.Schema({
+const CvSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user"
@@ -35,8 +35,6 @@ const CvSchema = mongoose.Schema({
     skills: [String],
     workHistory: [EmploymentSchema]
 });
-
-
 
 module.exports = {
     Cv: mongoose.model("cv", CvSchema),
