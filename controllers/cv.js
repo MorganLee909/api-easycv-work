@@ -1,4 +1,4 @@
-const Cv = require("../models/cv.js");
+const {Cv, Employment} = require("../models/cv.js");
 const Employer = require("../models/employer.js");
 
 module.exports = {
@@ -205,5 +205,48 @@ module.exports = {
         }
 
         return res.json("You do not have permission to delete that CV");
+    },
+
+    /*
+    POST: create and add a new job history to the CV
+    req.body = {
+        position: String
+        employer: String
+        startDate: Date
+        endDate: Date
+        description: String
+    }
+    req.params.cv = CV
+    response = Employment
+    */
+    addWorkHistory: function(req, res){
+        let newJob = {};
+        Cv.findOne({_id: req.params.cv})
+            .then((cv)=>{
+                if(cv.user.toString() !== res.locals.user.id.toString()) throw "owner";
+
+                newJob = new Employment({
+                    position: req.body.position,
+                    employer: req.body.employer,
+                    startDate: new Date(req.body.startDate),
+                    endDate: req.body.endDate ? new Date(req.body.endDate) : undefined,
+                    description: req.body.description
+                });
+
+                cv.workHistory.push(newJob);
+
+                return cv.save();
+            })
+            .then((cv)=>{
+                return res.json(newJob);
+            })
+            .catch((err)=>{
+                switch(err){
+                    case "owner": return res.json("User does not own this CV");
+                    default:
+                        console.error(err);
+                        return res.json("ERROR: Unable to update user's CV");
+                }
+            });
     }
 }

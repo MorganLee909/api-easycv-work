@@ -1,5 +1,5 @@
 const User = require("../models/user.js");
-const Cv = require("../models/cv.js");
+const {Cv} = require("../models/cv.js");
 
 const helper = require("../helper.js");
 const bcrypt = require("bcryptjs");

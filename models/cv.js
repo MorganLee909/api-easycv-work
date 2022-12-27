@@ -1,6 +1,26 @@
 const mongoose = require("mongoose");
 
-const cvSchema = mongoose.Schema({
+const EmploymentSchema = mongoose.Schema({
+    position: {
+        type: String,
+        required: true
+    },
+    employer: {
+        type: String,
+        required: true
+    },
+    startDate: {
+        type: Date,
+        required: true
+    },
+    endDate: Date,
+    description: {
+        type: String,
+        required: true
+    }
+});
+
+const CvSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user"
@@ -13,26 +33,12 @@ const cvSchema = mongoose.Schema({
         required: true
     },
     skills: [String],
-    workHistory: [{
-        position: {
-            type: String,
-            required: true
-        },
-        employer: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "employer",
-            required: true
-        },
-        startDate: {
-            type: Date,
-            required: true
-        },
-        endDate: Date,
-        description: {
-            type: String,
-            required: true
-        }
-    }]
+    workHistory: [EmploymentSchema]
 });
 
-module.exports = mongoose.model("cv", cvSchema);
+
+
+module.exports = {
+    Cv: mongoose.model("cv", CvSchema),
+    Employment: mongoose.model("employment", EmploymentSchema)
+};
