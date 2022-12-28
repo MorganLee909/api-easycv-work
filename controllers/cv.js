@@ -248,5 +248,35 @@ module.exports = {
                         return res.json("ERROR: Unable to update user's CV");
                 }
             });
+    },
+
+    /*
+    DELETE: remove a single job history from the cv
+    req.params = {
+        cv: CV
+        employment: Employment
+    }
+    response = {}
+    */
+    deleteWorkHistory: function(req, res){
+        Cv.findOne({_id: req.params.cv})
+            .then((cv)=>{
+                if(res.locals.user._id.toString() !== cv.user.toString()) throw "owner";
+
+                cv.workHistory.id(req.params.employment).remove();
+                
+                return cv.save();
+            })
+            .then((cv)=>{
+                return res.json({});
+            })
+            .catch((err)=>{
+                switch(err){
+                    case "owner": return res.json("User does not own this CV");
+                    default: 
+                        console.error(err);
+                        return res.json("ERROR: unable remove work history from CV");
+                }
+            });
     }
 }

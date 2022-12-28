@@ -22,6 +22,7 @@ module.exports = (app)=>{
     app.put("/api/cv", mid.user, cv.update);
     app.delete("/api/cv/:cv", mid.user, cv.delete);
     app.post("/api/cv/:cv/employment", mid.user, cv.addWorkHistory);
+    app.delete("/api/cv/:cv/employment/:employment", mid.user, cv.deleteWorkHistory);
 
     //EMPLOYER
     app.post("/api/employer", mid.user, employer.create);
