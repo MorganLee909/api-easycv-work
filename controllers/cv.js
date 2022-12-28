@@ -107,15 +107,6 @@ module.exports = {
             jobCategory: String
             experience: Number
             skills: [String]
-            newEmployment: [{
-                position: String
-                employer: Employer id || String,
-                newEmployer: Boolean
-                startDate: Date
-                endDate: Date
-                description: String
-            }],
-            removeEmployment: [workHistory id]
         }
     */
     update: function(req, res){
@@ -128,38 +119,6 @@ module.exports = {
                 if(req.body.jobCategory) cv.jobCategory = req.body.jobCategory;
                 if(req.body.experience) cv.experience = req.body.experience;
                 if(req.body.skills) cv.skills = req.body.skills;
-
-                if(req.body.newEmployment){
-                    for(let i = 0; i < req.body.newEmployment.length; i++){
-                        let wh = req.body.newEmployment[i];
-                        let employer = wh.employer;
-                        
-                        if(wh.newEmployer){
-                            let e = new Employer({name: wh.employer});
-                            e.save().catch((err)=>{console.error(err)});
-                            employer = e._id;
-                        }
-                        
-                        cv.workHistory.push({
-                            position: wh.position,
-                            employer: employer,
-                            startDate: new Date(wh.startDate),
-                            endDate: wh.endDate ? new Date(wh.endDate) : undefined,
-                            description: wh.description
-                        });
-                    }
-                }
-
-                if(req.body.removeEmployment){
-                    for(let i = 0; i < req.body.removeEmployment.length; i++){
-                        for(let j = 0; j < cv.workHistory.length; j++){
-                            if(req.body.removeEmployment[i] === cv.workHistory[j]._id.toString()){
-                                cv.workHistory.splice(j, 1);
-                                break;
-                            }
-                        }
-                    }
-                }
 
                 return cv.save();
             })

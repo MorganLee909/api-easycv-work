@@ -21,9 +21,9 @@
             <a href="#createCvRoute">Create CV</a>
             <a href="#updateCvRoute">Update CV</a>
             <a href="#deleteCvRoute">Delete CV</a>
-            <a href="#addEmployment">Add Employment</a>
-            <a href="#updateEmployment">Update Employment</a>
-            <a href="#deleteEmployment">Delete Employment</a>
+            <a href="#addEmploymentRoute">Add Employment</a>
+            <a href="#updateEmploymentRoute">Update Employment</a>
+            <a href="#deleteEmploymentRoute">Delete Employment</a>
             <h3>Employer</h3>
             <a href="#createEmployerRoute">Create Employer</a>
             <a href="#searchEmployerRoute">Search Employers</a>
@@ -138,15 +138,6 @@
     jobCategory (String, optional): job category for CV
     experience (Number, optional): years of experience in position
     skills ([String], optional): skill applicable to CV
-    newEmployment (Optional): [{
-        position (String): Job title of position held at company
-        employer (String): name of the employer
-        newEmployer (Boolean): true (For future use)
-        startDate (Date): Date of start of employment
-        endDate (Date, optional): Date of end of employment
-        description (String): Description of job responsiblities
-    }]
-    removeEmployment ([String], optional): Used to remove employment records from a CV. Should be a list of the `_id` properties from each employment that is to be removed.
 }</code></pre>
                 <code>response = CV</code>
             </div>
@@ -180,7 +171,7 @@
 }</code></pre>
             </div>
 
-            <div id="addEmployment" class="route">
+            <div id="addEmploymentRoute" class="route">
                 <h2><span class="method">POST:</span>/api/cv/:cv/employment</h2>
                 <p>Adds a single job to the work history on a CV</p>
                 <pre><code>params = {
@@ -196,7 +187,7 @@
                 <code>response = Employment</code>
             </div>
 
-            <div id="updateEmployment">
+            <div id="updateEmploymentRoute">
                 <h2><span class="method">PUT:</span>/api/cv/:cv/employment/:employment</h2>
                 <p>Update the details of a single job in the work history on a CV</p>
                 <pre><code>params = {
@@ -212,7 +203,7 @@
 }</code></pre>
             </div>
 
-            <div id="deleteEmployment" class="route">
+            <div id="deleteEmploymentRoute" class="route">
                 <h2><span class="method">DELETE:</span>/api/cv/:cv/employment/:employment</h2>
                 <p>Remove a single job from the work history on a CV</p>
                 <pre><code>params = {
