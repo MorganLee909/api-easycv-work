@@ -48,14 +48,6 @@ module.exports = {
         jobCategory: String
         experience: Number
         skills: [String]
-        workHistory: [{
-            position: String
-            employer: Employer || String
-            newEmployer: Boolean
-            startDate: Date
-            endDate: Date (optional)
-            description: String
-        }]
     }
     */
     create: function(req, res){
@@ -67,25 +59,6 @@ module.exports = {
             skills: req.body.skills,
             workHistory: []
         });
-
-        for(let i = 0; i < req.body.workHistory.length; i++){
-            let wh = req.body.workHistory[i];
-            let employer = wh.employer;
-
-            if(wh.newEmployer){
-                let e = new Employer({name: wh.employer});
-                e.save().catch((err)=>{console.error(err)});
-                employer = e._id;
-            }
-
-            cv.workHistory.push({
-                position: wh.position,
-                employer: employer,
-                startDate: new Date(wh.startDate),
-                endDate: wh.endDate ? new Date(wh.endDate) : undefined,
-                description: wh.description
-            });
-        }
 
         res.locals.user.cvs.push(cv._id);
 
