@@ -219,7 +219,7 @@ module.exports = {
     req.params.cv = CV
     response = Employment
     */
-    addWorkHistory: function(req, res){
+    addEmployment: function(req, res){
         let newJob = {};
         Cv.findOne({_id: req.params.cv})
             .then((cv)=>{
@@ -251,6 +251,50 @@ module.exports = {
     },
 
     /*
+    PUT: update an employment on user cv
+    req.params = {
+        cv: Cv
+        employment: Employment
+    }
+    req.body = {
+        position: String
+        employer: String
+        startDate: Date
+        endDate: Date
+        description: String
+    }
+    response = Employment
+    */
+    updateEmployment: function(req, res){
+        let employment = {};
+        Cv.findOne({_id: req.params.cv})
+            .then((cv)=>{
+                if(res.locals.user._id.toString() !== cv.user.toString()) throw "owner";
+
+                employment = cv.workHistory.id(req.params.employment);
+
+                if(req.body.position) employment.position = req.body.position;
+                if(req.body.employer) employment.employer = req.body.employer;
+                if(req.body.startDate) employment.startDate = new Date(req.body.startDate);
+                if(req.body.endDate) employment.endDate = new Date(req.body.endDate);
+                if(req.body.description) employment.description = req.body.description;
+
+                return cv.save();
+            })
+            .then((cv)=>{
+                return res.json(employment);
+            })
+            .catch((err)=>{
+                switch(err){
+                    case "owner": return res.json("User does not own this CV");
+                    default:
+                        console.error(err);
+                        return res.json("ERROR: unable to update employmnent history");
+                }
+            });
+    },
+
+    /*
     DELETE: remove a single job history from the cv
     req.params = {
         cv: CV
@@ -258,7 +302,7 @@ module.exports = {
     }
     response = {}
     */
-    deleteWorkHistory: function(req, res){
+    deleteEmployment: function(req, res){
         Cv.findOne({_id: req.params.cv})
             .then((cv)=>{
                 if(res.locals.user._id.toString() !== cv.user.toString()) throw "owner";
