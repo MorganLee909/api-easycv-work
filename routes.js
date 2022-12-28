@@ -1,6 +1,5 @@
 const user = require(`${__dirname}/controllers/user.js`);
 const cv = require(`${__dirname}/controllers/cv.js`);
-const employer = require(`${__dirname}/controllers/employer.js`);
 
 const mid = require("./middleware.js");
 
@@ -24,8 +23,4 @@ module.exports = (app)=>{
     app.post("/api/cv/:cv/employment", mid.user, cv.addEmployment);
     app.put("/api/cv/:cv/employment/:employment", mid.user, cv.updateEmployment);
     app.delete("/api/cv/:cv/employment/:employment", mid.user, cv.deleteEmployment);
-
-    //EMPLOYER
-    app.post("/api/employer", mid.user, employer.create);
-    app.get("/api/employer*", employer.retrieve);
 }

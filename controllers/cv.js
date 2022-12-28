@@ -1,5 +1,4 @@
 const {Cv, Employment} = require("../models/cv.js");
-const Employer = require("../models/employer.js");
 
 module.exports = {
     /*
@@ -9,10 +8,7 @@ module.exports = {
     retrieveMany: function(req, res){
         res.locals.user.populate("cvs")
             .then((user)=>{
-                return user.populate("cvs.workHistory.employer");
-            })
-            .then((user)=>{
-                return res.json(user);
+                return res.json(user.cvs);
             })
             .catch((err)=>{
                 console.error(err);
@@ -28,7 +24,6 @@ module.exports = {
     retrieve: function(req, res){
         Cv.findOne({_id: req.params.cv})
             .populate("user")
-            .populate("workHistory.employer")
             .then((cv)=>{
                 cv.user.password = undefined;
                 cv.user.cvs = undefined;
