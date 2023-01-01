@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 
 const EmploymentSchema = new mongoose.Schema({
+    autoCreate: false,
+    autoIndex: false,
     position: {
         type: String,
         required: true
