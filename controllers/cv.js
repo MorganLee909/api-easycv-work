@@ -80,6 +80,10 @@ module.exports = {
             jobCategory: String
             experience: Number
             skills: [String]
+            languages: [{
+                language: String
+                level: String
+            }]
         }
     */
     update: function(req, res){
@@ -92,6 +96,7 @@ module.exports = {
                 if(req.body.jobCategory) cv.jobCategory = req.body.jobCategory;
                 if(req.body.experience) cv.experience = req.body.experience;
                 if(req.body.skills) cv.skills = req.body.skills;
+                if(req.body.languages) cv.languages = req.body.languages
 
                 return cv.save();
             })
