@@ -43,6 +43,10 @@ module.exports = {
         jobCategory: String
         experience: Number
         skills: [String]
+        languages: [{
+            language: String
+            level: String
+        }]
     }
     */
     create: function(req, res){
@@ -52,6 +56,7 @@ module.exports = {
             jobCategory: req.body.jobCategory,
             experience: req.body.experience,
             skills: req.body.skills,
+            languages: req.body.languages,
             workHistory: []
         });
 
