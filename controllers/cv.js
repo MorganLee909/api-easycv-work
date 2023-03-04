@@ -56,7 +56,7 @@ module.exports = {
             jobCategory: req.body.jobCategory,
             experience: req.body.experience,
             skills: req.body.skills,
-            languages: req.body.languages,
+            languages: req.body.languages ? req.body.languages : [],
             workHistory: []
         });
 

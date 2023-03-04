@@ -113,19 +113,27 @@
     jobCategory (String): category that job falls under
     experience (Number): years of experience in job
     skills ([String]): list of user skills that apply to the job
+    languages (Array, optional): [{
+        language (String): name of the language
+        level (String): proficiency level in the language
+    }]
 }</code></pre>
                 <code>response = CV</code>
             </div>
 
             <div id="updateCvRoute" class="route">
                 <h2><span class="method">PUT:</span>/api/cv</h2>
-                <p>Updates basic data for a CV. For 'skills', 'newEmployment' and 'removeEmployment', a value of undefined or null will leave those properties unchanged. Provide all skills to update the skills field, it will completely replace the data.</p>
+                <p>Updates basic data for a CV. For 'skills' and 'languages' a value of undefined or null will leave those properties unchanged. Provide all skills/languages to update those fields, it will completely replace the data.</p>
                 <pre><code>body = {
     cv (String): id of CV to update
     jobTitle (String, optional): job title for CV
     jobCategory (String, optional): job category for CV
     experience (Number, optional): years of experience in position
     skills ([String], optional): skill applicable to CV
+    languages (Array, optional): [{
+        language (String): name of the language
+        level (String): proficiency level in the language
+    }]
 }</code></pre>
                 <code>response = CV</code>
             </div>
