@@ -35,6 +35,10 @@ const CvSchema = new mongoose.Schema({
         required: true
     },
     skills: [String],
+    languages: [{
+        language: String,
+        level: String
+    }],
     workHistory: [EmploymentSchema]
 });
 
