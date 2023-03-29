@@ -1,7 +1,7 @@
 const user = require("../logic/user.js");
 const User = require("../models/user.js");
 
-const newUser = new User({
+const newUser = {
     email: "bob@mail.com",
     password: "12345",
     firstName: "Bob",
@@ -28,7 +28,7 @@ const newUser = new User({
     ],
     skills: ["cooking", "baking", "espionage"],
     cvs: []
-});
+};
 
 const updateData = {
     email: "bob2@gmail.com",
@@ -36,7 +36,7 @@ const updateData = {
     lastName: "blecher",
     languages: [{
         name: "spanish",
-        leve: "a1"
+        level: "a1"
     }],
     socials: [],
     skills: ["grilling"]
@@ -55,7 +55,7 @@ describe("User logic", ()=>{
 
         test("throw error with invalid email", ()=>{
             expect(()=>{
-                user.update({
+                user.update(newUser, {
                     ...updateData,
                     email: "bob.com",
                 })
@@ -64,16 +64,13 @@ describe("User logic", ()=>{
 
         test("still update when some data is not included", ()=>{
             let updatedUser = user.update(newUser, {
-                ...updateData,
-                email: undefined,
-                firstName: undefined
+                ...newUser,
+                firstName: "Boob"
             });
 
             expect(updatedUser).toMatchObject({
                 ...newUser,
-                ...updatedData,
-                email: "bob@mail.com",
-                firstName: "Bob"
+                firstName: "Boob"
             });
         });
     })

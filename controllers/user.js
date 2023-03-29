@@ -126,19 +126,7 @@ module.exports = {
             });
     },
 
-    /*
-    PUT: update user data
-    req.body = {
-        email: String
-        firstName: String
-        lastName: String
-        languages: [{
-            name: String
-            level: String
-        }]
-        skills: [String]
-    }
-    */
+    
     update: function(req, res){
         let u = res.locals.user;
         if(req.body.email) u.email = req.body.email;
