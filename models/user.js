@@ -15,6 +15,16 @@ const UserSchema = new mongoose.Schema({
         name: String,
         level: String
     }],
+    socials: [{
+        name: {
+            type: String,
+            required: true
+        },
+        link: {
+            type: String,
+            required: true
+        }
+    }],
     skills: [String],
     cvs: [{
         type: mongoose.Schema.Types.ObjectId,

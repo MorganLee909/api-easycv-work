@@ -43,7 +43,8 @@ app.use(express.static(`${__dirname}/views/index.html`));
 
 mongoose.connect("mongodb://127.0.0.1/easycv", mongooseOptions);
 
-require(`${__dirname}/routes`)(app);
+require(`${__dirname}/routes.js`)(app);
+require(`${__dirname}/routes/user.js`)(app);
 
 if(process.env.NODE_ENV === "production"){
     app.get("/", (req, res)=>{res.sendFile(`${__dirname}/views/index.html`)});
