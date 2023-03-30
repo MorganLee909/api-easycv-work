@@ -84,6 +84,7 @@ module.exports = {
                     jobCategory: "",
                     experience: 0,
                     skills: [],
+                    socials: [],
                     workHistory: []
                 });
 
