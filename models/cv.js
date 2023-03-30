@@ -29,6 +29,7 @@ const CvSchema = new mongoose.Schema({
     },
     jobTitle: String,
     jobCategory: String,
+    overview: String,
     experience: {
         type: Number,
         min: 0,

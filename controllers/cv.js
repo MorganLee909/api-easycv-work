@@ -41,6 +41,7 @@ module.exports = {
     req.body = {
         jobTitle: String
         jobCategory: String
+        overview: String
         experience: Number
         skills: [String]
         languages: [{
@@ -54,6 +55,7 @@ module.exports = {
             user: res.locals.user._id,
             jobTitle: req.body.jobTitle,
             jobCategory: req.body.jobCategory,
+            overview: req.body.overview,
             experience: req.body.experience,
             skills: req.body.skills,
             languages: req.body.languages ? req.body.languages : [],
