@@ -80,6 +80,10 @@
         name (String): language name,
         level (String, optional): language level
     }]
+    socials (Optional): [{
+        name (String): name of the site
+        link (String): link to personal page on website.
+    }]
     skills ([String], optional): user skills, must contain all skills, new and old
 }</code></pre>
                 <code>response = User</code>
@@ -111,6 +115,7 @@
                 <pre><code>body = {
     jobTitle (String): job title for the user
     jobCategory (String): category that job falls under
+    overview (String, optional): overview/summary of the user on the CV
     experience (Number): years of experience in job
     skills ([String]): list of user skills that apply to the job
     languages (Array, optional): [{
@@ -128,6 +133,7 @@
     cv (String): id of CV to update
     jobTitle (String, optional): job title for CV
     jobCategory (String, optional): job category for CV
+    overview (String, optional): overview/summary of the user on the CV
     experience (Number, optional): years of experience in position
     skills ([String], optional): skill applicable to CV
     languages (Array, optional): [{
@@ -199,6 +205,10 @@
         name (String): language name
         level (String, optional): proficiency level of the language
     }]
+    socials: [{
+        name (String): name of site or location,
+        link (String): link to the user's page on the site
+    }]
     skills ([String], optional): List of skills for the user
     cvs ([CV]): List of CV's for the user. Will always contain at least one CV
 }</code></pre>
@@ -211,6 +221,7 @@
     user (User): user that owns the CV
     jobTitle (String): Job title of user
     jobCategory (String): Category of job
+    overview (String): Overview/summary of the person to which the CV applies
     experience (Number): Number of years of experience
     skills ([String]): List of skills from user that apply to this CV
     languages (Array): [{
