@@ -96,9 +96,10 @@ module.exports = {
 
                 if(req.body.jobTitle) cv.jobTitle = req.body.jobTitle;
                 if(req.body.jobCategory) cv.jobCategory = req.body.jobCategory;
+                if(req.body.overview) cv.overview = req.body.overview;
                 if(req.body.experience) cv.experience = req.body.experience;
                 if(req.body.skills) cv.skills = req.body.skills;
-                if(req.body.languages) cv.languages = req.body.languages
+                if(req.body.languages) cv.languages = req.body.languages;
 
                 return cv.save();
             })
