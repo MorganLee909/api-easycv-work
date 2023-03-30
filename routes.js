@@ -11,7 +11,7 @@ module.exports = (app)=>{
     app.post("/api/login", user.login);
     app.get("/api/user", mid.user, user.getOne);
     app.post("/api/user", user.create);
-    app.put("/api/user", mid.user, user.update);
+    // app.put("/api/user", mid.user, user.update);
     app.delete("/api/user", mid.user, user.delete);
 
     //CV

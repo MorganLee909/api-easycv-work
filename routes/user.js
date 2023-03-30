@@ -1,5 +1,7 @@
 const user = require("../logic/user.js");
 
+const mid = require("../middleware.js");
+
 module.exports = (app)=>{
     /*
     PUT: update user data

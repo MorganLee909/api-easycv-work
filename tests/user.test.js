@@ -1,5 +1,4 @@
 const user = require("../logic/user.js");
-const User = require("../models/user.js");
 
 const newUser = {
     email: "bob@mail.com",
