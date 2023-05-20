@@ -262,5 +262,13 @@ module.exports = {
                         return res.json("ERROR: unable remove work history from CV");
                 }
             });
+    },
+
+    /*
+    POST: upload profile image for user
+    req.files.image = File
+    */
+    addProfileImage: function(req, res){
+        
     }
 }

@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const https = require("https");
 const fs = require("fs");
+const fileUpload = require("express-fileupload");
 
 let app = express();
 
@@ -40,11 +41,14 @@ app.use(compression());
 app.use(express.json());
 app.use(cors({origin: corsOrigin}));
 app.use(express.static(`${__dirname}/views/index.html`));
+app.use(fileUpload({
+    limits: {fileSize: 15 * 1024 * 1024},
+}));
 
 mongoose.connect("mongodb://127.0.0.1/easycv", mongooseOptions);
 
 require(`${__dirname}/routes.js`)(app);
-require(`${__dirname}/routes/user.js`)(app);
+// require(`${__dirname}/routes/user.js`)(app);
 
 if(process.env.NODE_ENV === "production"){
     app.get("/", (req, res)=>{res.sendFile(`${__dirname}/views/index.html`)});
