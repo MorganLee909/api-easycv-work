@@ -8,7 +8,7 @@ module.exports = (app)=>{
     // app.get("/api/css", (req, res)=>{return res.sendFile(`${__dirname}/api.css`)});
 
     //USER
-    app.post("/api/login", user.login);
+    // app.post("/api/login", user.login);
     app.get("/api/user", mid.user, user.getOne);
     app.post("/api/user", user.create);
     app.put("/api/user", mid.user, user.update);

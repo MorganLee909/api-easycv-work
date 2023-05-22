@@ -13,8 +13,8 @@ module.exports = (app)=>{
         jwt: JSONWebToken
     }
     */
-    app.post("/user/login", (req, res)=>{
-        let token = user.login(req.body.email, req.body.password);
+    app.post("/user/login", async (req, res)=>{
+        let token = await user.login(req.body.email, req.body.password);
         res.json({jwt: token});
     }),
 
