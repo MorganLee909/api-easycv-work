@@ -12,7 +12,7 @@ describe("User logic", ()=>{
     let testUser = {};
 
     beforeAll(()=>{
-        mongoose.connect("mongodb://127.0.0.1/test", {
+        mongoose.connect("mongodb://127.0.0.1/testing", {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
@@ -51,7 +51,8 @@ describe("User logic", ()=>{
         await testUser.save();
     });
 
-    afterAll(()=>{
+    afterAll(async ()=>{
+        // await mongoose.connection.db.dropDatabase((err)=>{console.error(err)});
         mongoose.disconnect();
     });
 
@@ -198,6 +199,21 @@ describe("User logic", ()=>{
             let updatedUser = await userLogic.update(testUser._id.toString(), {firstName: "Stirling Archer"});
 
             expect(updatedUser.firstName).toBe("Stirling Archer");
+        });
+    });
+
+    describe("Delete user", ()=>{
+        test("respond with empty object", async ()=>{
+            let response = await userLogic.remove(testUser._id.toString());
+
+            expect(response).toMatchObject({});
+        });
+
+        test("remove user from database", async ()=>{
+            await userLogic.remove(testUser._id.toString());
+            let dbUser = await User.findOne({_id: testUser._id});
+
+            expect(dbUser).toBeNull();
         });
     })
 });

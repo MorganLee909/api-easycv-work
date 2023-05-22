@@ -60,8 +60,19 @@ module.exports = (app)=>{
             link: String
         }]
     }
+    response = User
     */
     app.put("/user", mid.user, async (req, res)=>{
         res.json({user: await user.update()});
+    });
+
+    /*
+    DELETE:  delete a user
+    req.params.user = String Id
+    response = {}
+    */
+    app.delete("/user", mid.user, async (req, res)=>{
+        await user.remove(req.params.user);
+        res.json({});
     });
 }

@@ -67,5 +67,11 @@ module.exports = {
         if(data.socials) user.socials = data.socials;
 
         return await user.save();
+    },
+
+    remove: async function(id){
+        await User.deleteOne({_id: id});
+
+        return {};
     }
 }
