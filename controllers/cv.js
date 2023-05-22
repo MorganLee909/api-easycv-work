@@ -1,5 +1,10 @@
 const {Cv, Employment} = require("../models/cv.js");
 
+const helper = require("../helper.js");
+
+const sharp = require("sharp");
+const fs = require("fs");
+
 module.exports = {
     /*
     GET: retrieve all CV's for the logged in user
@@ -266,9 +271,34 @@ module.exports = {
 
     /*
     POST: upload profile image for user
+    req.params.cv = String id
     req.files.image = File
     */
     addProfileImage: function(req, res){
-        
+        let newFile = `/profile-images/${helper.createId(25)}.webp`;
+        let cv = {};
+
+        Cv.findOne({_id: req.params.cv})
+            .then((response)=>{
+                cv = response;
+                if(cv.user.toString() !== res.locals.user._id.toString()) throw "user";
+
+                return sharp(req.files.image.data)
+                    .resize({width: 250, height: 250})
+                    .webp()
+                    .toFile(`${appRoot}${newFile}`);
+            })
+            .then((response)=>{
+                if(cv.profileImage) fs.unlink(`${appRoot}${cv.profileImage}`, (err)=>{console.error(err)});
+                cv.profileImage = newFile;
+
+                return cv.save();
+            })
+            .then((cv)=>{
+                res.json(cv);
+            })
+            .catch((err)=>{
+                console.error(err);
+            });
     }
 }

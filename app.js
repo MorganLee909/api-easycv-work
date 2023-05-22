@@ -8,6 +8,8 @@ const fileUpload = require("express-fileupload");
 
 let app = express();
 
+global.appRoot = __dirname;
+
 let mongooseOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true

@@ -23,7 +23,7 @@ module.exports = (app)=>{
     app.post("/api/cv/:cv/employment", mid.user, cv.addEmployment);
     app.put("/api/cv/:cv/employment/:employment", mid.user, cv.updateEmployment);
     app.delete("/api/cv/:cv/employment/:employment", mid.user, cv.deleteEmployment);
-    app.post("/api/cv/profile-image", mid.user, cv.addProfileImage);
+    app.post("/api/cv/:cv/profile-image", mid.user, cv.addProfileImage);
 
     //OTHER
     app.get("/api/profile-images/:id", (req, res)=>{res.sendFile(`${__dirname}/profile-images/${req.params.id}`)});

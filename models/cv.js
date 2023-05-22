@@ -27,6 +27,7 @@ const CvSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "user"
     },
+    profileImage: String,
     jobTitle: String,
     jobCategory: String,
     overview: String,
