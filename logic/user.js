@@ -30,6 +30,27 @@ module.exports = {
         return user;
     },
 
+    create: async function(data){
+        if(data.password.length < 10) throw new Error("Password must contain at least 10 characters");
+        if(!helper.validEmail(data.email)) throw new Error("Invalid email address");
+
+        let user = new User(data);
+
+        user.email = user.email.toLowerCase();
+
+        let salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
+
+        return {
+            user: await user.save(),
+            jwt: jwt.sign({
+                id: user._id,
+                email: user.email,
+                passHash: user.password
+            }, process.env.JWT_SECRET)
+        };
+    },
+
     update: function(user, data){
         if(data.email){
             let email = data.email.toLowerCase();

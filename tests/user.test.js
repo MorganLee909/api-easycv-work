@@ -104,6 +104,62 @@ describe("User logic", ()=>{
         });
     });
 
+    describe("Create a user", ()=>{
+        let testData = {
+            firstName: "Bob",
+            lastName: "Bobert",
+            email: "BobBobert@mail.com",
+            password: "password123"
+        };
+
+        test("respond with user", async ()=>{
+            let {user} = await userLogic.create(testData);
+
+            expect(user._id).toBeInstanceOf(mongoose.Types.ObjectId);
+            expect(user.firstName).toBe("Bob");
+            expect(user.lastName).toBe("Bobert");
+            expect(user.email).toBe("bobbobert@mail.com");
+        });
+
+        test("password to be hashed", async ()=>{
+            let {user} = await userLogic.create(testData);
+
+            expect(user.password).not.toBe("password123");
+        })
+
+        test("respond with jwt", async ()=>{
+            let {jwt} = await userLogic.create(testData);
+
+            expect(typeof(jwt)).toBe("string");
+        });
+
+        test("create user in database", async ()=>{
+            let {user} = await userLogic.create(testData);
+
+            let dbUser = await User.findOne({_id: user.id});
+
+            expect(dbUser._id.toString()).toBe(user._id.toString());
+        });
+
+        test("throw error if password too short", ()=>{
+            expect(async ()=>{
+                await userLogic.create({
+                    ...testData,
+                    password: "pass12"
+                });
+            }).rejects.toEqual(new Error("Password must contain at least 10 characters"));
+        });
+
+        test("throw error with invalid email", ()=>{
+            expect(async ()=>{
+                await userLogic.create({
+                    ...testData,
+                    email: "BobBobert@mail"
+                });
+            }).rejects.toEqual(new Error("Invalid email address"));
+        });
+    })
+
     // describe("Update user", ()=>{
     //     test("update user data when proper info passed", ()=>{
     //         let updatedUser = user.update(newUser, updateData);
