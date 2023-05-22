@@ -4,8 +4,8 @@ const cv = require(`${__dirname}/controllers/cv.js`);
 const mid = require("./middleware.js");
 
 module.exports = (app)=>{
-    app.get("/api", (req, res)=>{return res.sendFile(`${__dirname}/api.html`)});
-    app.get("/api/css", (req, res)=>{return res.sendFile(`${__dirname}/api.css`)});
+    // app.get("/api", (req, res)=>{return res.sendFile(`${__dirname}/api.html`)});
+    // app.get("/api/css", (req, res)=>{return res.sendFile(`${__dirname}/api.css`)});
 
     //USER
     app.post("/api/login", user.login);

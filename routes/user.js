@@ -20,7 +20,7 @@ module.exports = (app)=>{
         }]
     }
     */
-    app.put("/api/user", mid.user, (req, res)=>{
+    app.put("/user", mid.user, (req, res)=>{
         user.update(res.locals.user, req.body)
             .save()
             .then((user)=>{
