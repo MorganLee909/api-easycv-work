@@ -24,6 +24,7 @@
             <a href="#addEmploymentRoute">Add Employment</a>
             <a href="#updateEmploymentRoute">Update Employment</a>
             <a href="#deleteEmploymentRoute">Delete Employment</a>
+            <a href="#addProfileImage">Add Profile Image</a>
             <h2>Models</h2>
             <a href="#userModel">User</a>
             <a href="#cvModel">CV</a>
@@ -190,6 +191,16 @@
     employment: ID of employment to be removed from 'workHistory'
 }</code></pre>
             <code>response = {}</code>
+            </div>
+
+            <div id="addProfileImage" class="route">
+                <h2><span class="method">POST:</span>/api/cv/:cv/profile-image</h2>
+                <p>Add a profile image to the CV of a user</p>
+                <p>Body of request requires the use of <a href="https://developer.mozilla.org/en-US/docs/Web/API/FormData" target="_blank">FormData</a> Object</p>
+                <pre><code>params = {
+    cv: ID of cv to add profile image to
+}</code></pre>
+            <code>response = CV</code>
             </div>
 
             <h1>Data</h1>
