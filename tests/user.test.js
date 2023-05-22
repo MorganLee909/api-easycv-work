@@ -1,4 +1,4 @@
-const user = require("../logic/user.js");
+const userLogic = require("../logic/user.js");
 
 const User = require("../models/user.js");
 
@@ -68,23 +68,39 @@ describe("User logic", ()=>{
         mongoose.disconnect();
     });
 
-    describe("Login", ()=>{
+    describe("User login", ()=>{
         test("respond with JWT", async ()=>{
-            let token = await user.login("bob@mail.com", "password123");
+            let token = await userLogic.login("bob@mail.com", "password123");
 
             expect(typeof(token)).toBe("string");
         });
 
         test("throw error with non-existant email", ()=>{
             expect(async ()=>{
-                await user.login("frank@mail.com", "password123");
+                await userLogic.login("frank@mail.com", "password123");
             }).rejects.toEqual(new Error("No user with that email"));
         });
 
         test("throw error with bad email", async ()=>{
             expect(async ()=>{
-                await user.login("bob@mail.com", "password124");
+                await userLogic.login("bob@mail.com", "password124");
             }).rejects.toEqual(new Error("Invalid password"));
+        });
+    });
+
+    describe("Get single user", ()=>{
+        test("return requested user", async ()=>{
+            let user = await userLogic.getOne(testUser._id.toString());
+
+            expect(user.email).toBe(testUser.email);
+            expect(user.firstName).toBe(testUser.firstName);
+            expect(user.lastName).toBe(testUser.lastName);
+        });
+
+        test("throw error with bad ID", ()=>{
+            expect(async ()=>{
+                await userLogic.getOne("646b8b60abf4f5726d29aae6");
+            }).rejects.toEqual(new Error("No user with this ID"));
         });
     });
 

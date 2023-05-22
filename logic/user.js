@@ -22,6 +22,14 @@ module.exports = {
         }, process.env.JWT_SECRET);
     },
 
+    getOne: async function(id){
+        let user = await User.findOne({_id: id});
+
+        if(user === null) throw new Error("No user with this ID");
+
+        return user;
+    },
+
     update: function(user, data){
         if(data.email){
             let email = data.email.toLowerCase();
