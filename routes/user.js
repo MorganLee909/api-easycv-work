@@ -61,15 +61,7 @@ module.exports = (app)=>{
         }]
     }
     */
-    app.put("/user", mid.user, (req, res)=>{
-        user.update(res.locals.user, req.body)
-            .save()
-            .then((user)=>{
-                user.password = undefined;
-                return res.json(user);
-            })
-            .catch((err)=>{
-                console.error(err);
-            });
+    app.put("/user", mid.user, async (req, res)=>{
+        res.json({user: await user.update()});
     });
 }

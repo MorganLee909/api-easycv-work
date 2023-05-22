@@ -8,18 +8,6 @@ const bcrypt = require("bcryptjs");
 let salt = bcrypt.genSaltSync(10);
 let hash = bcrypt.hashSync("password123", salt);
 
-const updateData = {
-    email: "bob2@gmail.com",
-    firstName: "Boob",
-    lastName: "blecher",
-    languages: [{
-        name: "spanish",
-        level: "a1"
-    }],
-    socials: [],
-    skills: ["grilling"]
-}
-
 describe("User logic", ()=>{
     let testUser = {};
 
@@ -29,7 +17,6 @@ describe("User logic", ()=>{
             useUnifiedTopology: true
         });
     });
-
 
     beforeEach(async ()=>{
         testUser = new User({
@@ -160,37 +147,59 @@ describe("User logic", ()=>{
         });
     })
 
-    // describe("Update user", ()=>{
-    //     test("update user data when proper info passed", ()=>{
-    //         let updatedUser = user.update(newUser, updateData);
+    describe("Update user", ()=>{
+        let updateData = {
+            email: "Bob2@gmail.com",
+            firstName: "Boob",
+            lastName: "blecher",
+            languages: [{
+                name: "spanish",
+                level: "a1"
+            }],
+            socials: [],
+            skills: ["grilling"]
+        };
 
-    //         expect(updatedUser).toMatchObject({
-    //             ...newUser,
-    //             ...updateData
-    //         });
-    //     });
+        test("respond with correct user data", async ()=>{
+            let updatedUser = await userLogic.update(testUser._id.toString(), updateData);
 
-    //     test("throw error with invalid email", ()=>{
-    //         expect(()=>{
-    //             user.update(newUser, {
-    //                 ...updateData,
-    //                 email: "bob.com",
-    //             })
-    //         }).toThrow(SyntaxError);
-    //     });
+            expect(updatedUser._id.toString()).toBe(testUser._id.toString());
+            expect(updatedUser.email).toBe("bob2@gmail.com");
+            expect(updatedUser.firstName).toBe("Boob");
+            expect(updatedUser.lastName).toBe("blecher");
+            expect(updatedUser.languages.length).toBe(1);
+            expect(updatedUser.socials.length).toBe(0);
+            expect(updatedUser.skills[0]).toBe("grilling");
+        });
 
-    //     test("still update when some data is not included", ()=>{
-    //         let updatedUser = user.update(newUser, {
-    //             ...newUser,
-    //             firstName: "Boob"
-    //         });
+        test("update the database", async ()=>{
+            let updatedUser = await userLogic.update(testUser._id.toString(), updateData);
+            let dbUser = await User.findOne({_id: testUser._id});
 
-    //         expect(updatedUser).toMatchObject({
-    //             ...newUser,
-    //             firstName: "Boob"
-    //         });
-    //     });
-    // })
+            expect(dbUser._id.toString()).toBe(testUser._id.toString());
+            expect(dbUser.email).toBe("bob2@gmail.com");
+            expect(dbUser.firstName).toBe("Boob");
+            expect(dbUser.lastName).toBe("blecher");
+            expect(dbUser.languages.length).toBe(1);
+            expect(dbUser.socials.length).toBe(0);
+            expect(dbUser.skills[0]).toBe("grilling");
+        })
+
+        test("throw error with invalid email", ()=>{
+            expect(async ()=>{
+                await userLogic.update(testUser._id.toString(), {
+                    ...updateData,
+                    email: "blob@mail"
+                });
+            }).rejects.toThrow(new Error("Invalid email address"));
+        });
+
+        test("still update when some data is not included", async ()=>{
+            let updatedUser = await userLogic.update(testUser._id.toString(), {firstName: "Stirling Archer"});
+
+            expect(updatedUser.firstName).toBe("Stirling Archer");
+        });
+    })
 });
 
 mongoose.disconnect();

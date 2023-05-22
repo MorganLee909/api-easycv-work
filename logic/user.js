@@ -51,10 +51,12 @@ module.exports = {
         };
     },
 
-    update: function(user, data){
+    update: async function(id, data){
+        let user = await User.findOne({_id: id});
+
         if(data.email){
             let email = data.email.toLowerCase();
-            if(!helper.validEmail(email)) throw new SyntaxError("Invalid email");
+            if(!helper.validEmail(email)) throw new Error("Invalid email address");
             user.email = email;
         }
 
@@ -64,6 +66,6 @@ module.exports = {
         if(data.skills) user.skills = data.skills;
         if(data.socials) user.socials = data.socials;
 
-        return user;
+        return await user.save();
     }
 }
