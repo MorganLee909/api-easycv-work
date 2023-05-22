@@ -4,6 +4,21 @@ const mid = require("../middleware.js");
 
 module.exports = (app)=>{
     /*
+    POST: login in a user
+    req.body = {
+        email: String
+        password: String
+    }
+    response = {
+        jwt: JSONWebToken
+    }
+    */
+    app.post("/user/login", (req, res)=>{
+        let token = user.login(req.body.email, req.body.password);
+        res.json({jwt: token});
+    }),
+
+    /*
     PUT: update user data
     req.body = {
         email: String

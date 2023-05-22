@@ -29,7 +29,7 @@ module.exports = {
                 let token = jwt.sign({
                     id: u._id,
                     email: u.email,
-                    passHassh: u.password
+                    passHash: u.password
                 }, process.env.JWT_SECRET);
 
                 return res.json({jwt: token});
