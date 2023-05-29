@@ -8,11 +8,6 @@ const bcrypt = require("bcryptjs");
 let salt = bcrypt.genSaltSync(10);
 let hash = bcrypt.hashSync("password123", salt);
 
-afterAll(async ()=>{
-    await mongoose.connection.db.dropDatabase((err)=>{console.error(err)});
-    mongoose.disconnect();
-});
-
 describe("User logic", ()=>{
     let testUser = {};
 
@@ -56,7 +51,10 @@ describe("User logic", ()=>{
         await testUser.save();
     });
 
-    
+    afterAll(async ()=>{
+        await mongoose.connection.db.dropDatabase();
+        mongoose.disconnect();
+    });
 
     describe("User login", ()=>{
         test("respond with JWT", async ()=>{
@@ -217,7 +215,7 @@ describe("User logic", ()=>{
 
             expect(dbUser).toBeNull();
         });
-    })
+    });
 });
 
 mongoose.disconnect();

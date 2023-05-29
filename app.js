@@ -54,6 +54,7 @@ app.get("/documentation.css", (req, res)=>{return res.sendFile(`${__dirname}/api
 
 require(`${__dirname}/routes.js`)(app);
 require(`${__dirname}/routes/user.js`)(app);
+require(`${__dirname}/routes/cv.js`)(app); 
 
 if(process.env.NODE_ENV === "production"){
     app.get("/", (req, res)=>{res.sendFile(`${__dirname}/views/index.html`)});
