@@ -12,7 +12,7 @@ describe("User logic", ()=>{
     let testUser = {};
 
     beforeAll(()=>{
-        mongoose.connect("mongodb://127.0.0.1/testing", {
+        mongoose.connect("mongodb://127.0.0.1/testingUser", {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });

@@ -12,4 +12,12 @@ module.exports = (app)=>{
         let cv = await cv.getOne(req.params.id);
         res.json(cv);
     });
+
+    /*
+    GET: retrieve all CV's belonging to current user
+    */
+    app.get("/", mid.user, async (req, res)=>{
+        let cvs = await cv.getAll(res.locals.user._id);
+        res.json(cvs);
+    });
 }

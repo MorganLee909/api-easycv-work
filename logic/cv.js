@@ -7,5 +7,10 @@ module.exports = {
         if(cv === null) throw new Error("No CV with this ID");
 
         return cv;
+    },
+
+    getMany: async function(userObjectId){
+        let cvs = Cv.find({user: userObjectId});
+        return cvs;
     }
 }

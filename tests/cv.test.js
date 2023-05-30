@@ -11,10 +11,9 @@ let hash = bcrypt.hashSync("password123", salt);
 
 describe("CV logic", ()=>{
     let testUser = {};
-    let testCv = {};
 
     beforeAll(async ()=>{
-        mongoose.connect("mongodb://127.0.0.1/testing", {
+        mongoose.connect("mongodb://127.0.0.1/testingCv", {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
@@ -31,7 +30,10 @@ describe("CV logic", ()=>{
     });
 
     beforeEach(async ()=>{
-        testCv = new Cv({
+        await mongoose.connection.db.dropCollection("cvs");
+        testUser.cvs = [];
+
+        let testCv = new Cv({
             user: testUser._id,
             jobTitle: "Resteraunteur",
             jobCategory: "Entrepreneur",
@@ -55,7 +57,23 @@ describe("CV logic", ()=>{
             workHistory: []
         });
 
-        await testCv.save();
+        let testCv2 = new Cv({
+            user: testUser._id,
+            jobTitle: "encodener",
+            jobCategory: "IT",
+            overview: "Some overview text",
+            experience: 3,
+            skills: ["typing", "drinking coffe"],
+            languages: [{
+                language: "English",
+                level: "native"
+            }],
+            workHistory: []
+        });
+
+        testUser.cvs.push(testCv, testCv2);
+
+        await Promise.all([testCv.save(), testCv2.save(), testUser.save()]);
     });
 
     afterAll(async ()=>{
@@ -65,9 +83,9 @@ describe("CV logic", ()=>{
 
     describe("Get single CV", ()=>{
         test("return requested cv", async ()=>{
-            let cv = await cvLogic.getOne(testCv._id.toString());
+            let cv = await cvLogic.getOne(testUser.cvs[0]._id.toString());
 
-            expect(cv._id.toString()).toBe(testCv._id.toString());
+            expect(cv._id.toString()).toBe(testUser.cvs[0]._id.toString());
             expect(cv.user.toString()).toBe(testUser._id.toString());
             expect(cv.jobTitle).toBe("Resteraunteur");
             expect(cv.jobCategory).toBe("Entrepreneur");
@@ -78,6 +96,27 @@ describe("CV logic", ()=>{
             expect(async ()=>{
                 await cvLogic.getOne("646b8b60abf4f5726d29aae6");
             }).rejects.toEqual(new Error("No CV with this ID"));
+        });
+    });
+
+    describe("Get all user CV's", ()=>{
+        test("return number of CV's that match user", async ()=>{
+            let cvs = await cvLogic.getMany(testUser._id);
+
+            expect(cvs.length).toBe(2);
+        });
+
+        test("return correct CVs", async ()=>{
+            let cvs = await cvLogic.getMany(testUser._id);
+
+            expect(cvs[0]._id.toString()).toBe(testUser.cvs[0]._id.toString());
+            expect(cvs[1]._id.toString()).toBe(testUser.cvs[1]._id.toString());
+        });
+
+        test("return empty array if no CVs exist", async ()=>{
+            let cvs = await cvLogic.getMany(new mongoose.Types.ObjectId("646b8b60abf4f5726d29aae6"));
+
+            expect(cvs.length).toBe(0);
         });
     });
 })
