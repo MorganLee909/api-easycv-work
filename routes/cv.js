@@ -15,9 +15,30 @@ module.exports = (app)=>{
 
     /*
     GET: retrieve all CV's belonging to current user
+    response = [CV]
     */
-    app.get("/", mid.user, async (req, res)=>{
+    app.get("/cv", mid.user, async (req, res)=>{
         let cvs = await cv.getAll(res.locals.user._id);
         res.json(cvs);
+    });
+
+    /*
+    POST: create a new CV and add it to the user
+    req.body = {
+        jobTitle: String
+        jobCategory: String
+        overview: String
+        experience: Number
+        skills: [String]
+        languages: [{
+            language: String
+            level: String
+        }]
+    }
+    response = CV
+    */
+    app.post("/cv", mid.user, async (req, res)=>{
+        let cv = await cv.create(user, req.body);
+        res.json(cv);
     });
 }

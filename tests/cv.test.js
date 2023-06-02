@@ -119,4 +119,56 @@ describe("CV logic", ()=>{
             expect(cvs.length).toBe(0);
         });
     });
-})
+
+    describe("Create CV", ()=>{
+        let cvData = {
+            jobTitle: "Burger boy",
+            jobCategory: "Foodstuffs",
+            overview: "Cooking burgers and serving large Farvas",
+            experience: 3,
+            skills: ["cooking", "microwaving", "espionage"],
+            languages: [{
+                language: "Ukrainian",
+                level: "15"
+            }]
+        };
+
+        afterEach(async ()=>{
+            testUser.cvs.splice(2, 1);
+            await testUser.save();
+        });
+
+        test("return a cv", async ()=>{
+            let cv = await cvLogic.create(testUser, cvData);
+
+            expect(cv.jobTitle).not.toBe(undefined);
+            expect(cv.jobCategory).not.toBe(undefined);
+        });
+
+        test("add new CV to database", async ()=>{
+            let cv = await cvLogic.create(testUser, cvData);
+            let dbcv = await Cv.findOne({_id: cv._id});
+            
+            expect(dbcv).toBeInstanceOf(Cv);
+        });
+
+        test("add CV to user's list of CVs", async ()=>{
+            let cv = await cvLogic.create(testUser, cvData);
+            let user = await User.findOne({cv: cv._id});
+
+            expect(user.cvs.find(x=>x.toString()===cv._id.toString())).not.toBeUndefined();
+        });
+
+        test("create correct CV data", async ()=>{
+            let cv = await cvLogic.create(testUser, cvData);
+            let dbcv = await Cv.findOne({_id: cv._id});
+
+            expect(dbcv.jobTitle).toBe("Burger boy");
+            expect(dbcv.jobCategory).toBe("Foodstuffs");
+            expect(dbcv.overview).toBe("Cooking burgers and serving large Farvas");
+            expect(dbcv.experience).toBe(3);
+            expect(dbcv.skills).toHaveLength(3);
+            expect(dbcv.languages).toHaveLength(1);
+        });
+    });
+});
