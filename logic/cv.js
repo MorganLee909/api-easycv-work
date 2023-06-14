@@ -30,5 +30,9 @@ module.exports = {
 
         await Promise.all([user.save(), cv.save()]);
         return cv;
+    },
+
+    update: async function(user, cvId, data){
+        
     }
 }

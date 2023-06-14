@@ -41,4 +41,23 @@ module.exports = (app)=>{
         let cv = await cv.create(user, req.body);
         res.json(cv);
     });
+
+    /*
+    PUT: update CV data
+    req.params.cv = CV ID
+    req.body = {
+        jobTitle: String
+        jobCategory: String
+        experience: Number
+        skills: [String],
+        languages: [{
+            language: String
+            level: String
+        }]
+    }
+    */
+    app.put("/cv/:cv", mid.user, async (req, res)=>{
+        let cv = await cv.update(res.locals.user, req.params.cv, req.body);
+        res.json(cv);
+    });
 }

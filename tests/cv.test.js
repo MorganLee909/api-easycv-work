@@ -171,4 +171,14 @@ describe("CV logic", ()=>{
             expect(dbcv.languages).toHaveLength(1);
         });
     });
+
+    describe("Update CV", ()=>{
+        test("return a CV", ()=>{
+            
+        });
+
+        test("update all properties", ()=>{});
+
+        test("update only passed in properties", ()=>{});
+    });
 });
