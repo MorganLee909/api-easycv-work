@@ -136,6 +136,7 @@ module.exports = {
 
         if(req.body.languages) u.languages = req.body.languages;
         if(req.body.skills) u.skills = req.body.skills;
+        if(req.body.socials) u.socials = req.body.socials;
 
         u.save()
             .then((user)=>{
